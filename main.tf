@@ -35,18 +35,18 @@ resource "aws_docdb_cluster_parameter_group" "main" {
 }
 
 resource "aws_docdb_cluster" "main" {
-  cluster_identifier      = "${local.name_prefix}-cluster"
-  engine                  = "docdb"
-  master_username         = data.aws_ssm_parameter.master_username
-  master_password         = data.aws_ssm_parameter.master_password
-  backup_retention_period = var.backup_retention_period
-  preferred_backup_window = var.preferred_backup_window
-  skip_final_snapshot     = var.skip_final_snapshot
-  db_subnet_group_name    = aws_docdb_subnet_group.main.name
-  vpc_security_group_ids  = [aws_security_group.main.id]
+  cluster_identifier              = "${local.name_prefix}-cluster"
+  engine                          = "docdb"
+  master_username                 = data.aws_ssm_parameter.master_username.value
+  master_password                 = data.aws_ssm_parameter.master_password.value
+  backup_retention_period         = var.backup_retention_period
+  preferred_backup_window         = var.preferred_backup_window
+  skip_final_snapshot             = var.skip_final_snapshot
+  db_subnet_group_name            = aws_docdb_subnet_group.main.name
+  vpc_security_group_ids          = [aws_security_group.main.id]
   db_cluster_parameter_group_name = aws_docdb_cluster_parameter_group.main.name
   engine_version                  = var.engine_version
-  tags        = merge(local.tags, { Name = "${local.name_prefix}-cluster" })
+  tags                            = merge(local.tags, { Name = "${local.name_prefix}-cluster" })
 }
 
 
